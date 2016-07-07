@@ -162,7 +162,21 @@ myCompressList_2 xs = fst $ foldr f ([], Nothing) xs
 --    Example:
 --    ?- pack([a,a,a,a,b,c,c,a,a,d,e,e,e,e],X).
 --    X = [[a,a,a,a],[b],[c,c],[a,a],[d],[e,e,e,e]]
---
+
+myPackList_1 :: Eq a => [a] -> [[a]]
+myPackList_1 [] = []
+myPackList_1 (x:[]) = [[x]]
+myPackList_1 (x:xs) | x == x''  = (x:x'':xs'') : ys
+                    | otherwise = [x] : xs' : ys
+    where (xs'@(x'':xs'') : ys) = myPackList_1 xs
+
+myPackList_2 :: Eq a => [a] -> [[a]]
+myPackList_2 xs = fst $ foldr f ([], Nothing) xs
+    where f :: Eq a => a -> ([[a]], Maybe a) -> ([[a]], Maybe a)
+          f x ([], Nothing) = ([[x]], Just x)
+          f x (yss'@(ys:yss), x''@(Just x')) | x == x'   = ((x:ys) : yss, x'')
+                                             | otherwise = ([x] : yss', Just x)
+
 --1.10 (*) Run-length encoding of a list.
 --    Use the result of problem 1.09 to implement the so-called run-length encoding data compression method. Consecutive duplicates of elements are encoded as terms [N,E] where N is the number of duplicates of the element E.
 --
