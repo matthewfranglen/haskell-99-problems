@@ -79,7 +79,24 @@ myListLength_3 = foldr f 0
           f _ = (+1)
 
 --1.05 (*) Reverse a list.
---
+
+myListReverse_1 :: [a] -> [a]
+myListReverse_1 = reverse
+
+myListReverse_2 :: [a] -> [a]
+myListReverse_2 [] = []
+myListReverse_2 (x:xs) = (myListReverse_2 xs) ++ [x]
+
+myListReverse_3 :: [a] -> [a]
+myListReverse_3 = foldr f []
+    where f :: a -> [a] -> [a]
+          f x xs = xs ++ [x]
+
+myListReverse_4 :: [a] -> [a]
+myListReverse_4 = foldl' f []
+    where f :: [a] -> a -> [a]
+          f xs x = x:xs
+
 --1.06 (*) Find out whether a list is a palindrome.
 --    A palindrome can be read forward or backward; e.g. [x,a,m,a,x].
 --
