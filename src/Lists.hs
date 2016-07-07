@@ -127,7 +127,15 @@ myListIsPalendrome_3 xs = fst $ foldr f (True, xs) xs
 --    X = [a, b, c, d, e]
 --
 --    Hint: Use the predefined predicates is_list/1 and append/3
---
+
+data Nestable a = Item a
+                | List [Nestable a]
+
+myFlattenList_1 :: [Nestable a] -> [a]
+myFlattenList_1 [] = []
+myFlattenList_1 (Item x:xs) = x : myFlattenList_1 xs
+myFlattenList_1 (List xs':xs) = myFlattenList_1 xs' ++ myFlattenList_1 xs
+
 --1.08 (**) Eliminate consecutive duplicates of list elements.
 --    If a list contains repeated elements they should be replaced with a single copy of the element. The order of the elements should not be changed.
 --
