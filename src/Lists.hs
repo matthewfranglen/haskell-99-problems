@@ -183,7 +183,12 @@ myPackList_2 xs = fst $ foldr f ([], Nothing) xs
 --    Example:
 --    ?- encode([a,a,a,a,b,c,c,a,a,d,e,e,e,e],X).
 --    X = [[4,a],[1,b],[2,c],[2,a],[1,d][4,e]]
---
+
+myRunLength_1 :: Eq a => [a] -> [(Int, a)]
+myRunLength_1 xs = foldr f [] $ myPackList_1 xs
+    where f :: Eq a => [a] -> [(Int, a)] -> [(Int, a)]
+          f xs@(x:_) = (:) (length xs, x)
+
 --1.11 (*) Modified run-length encoding.
 --    Modify the result of problem 1.10 in such a way that if an element has no duplicates it is simply copied into the result list. Only elements with duplicates are transferred as [N,E] terms.
 --
