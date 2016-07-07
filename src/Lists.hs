@@ -142,7 +142,20 @@ myFlattenList_1 (List xs':xs) = myFlattenList_1 xs' ++ myFlattenList_1 xs
 --    Example:
 --    ?- compress([a,a,a,a,b,c,c,a,a,d,e,e,e,e],X).
 --    X = [a,b,c,a,d,e]
---
+
+myCompressList_1 :: Eq a => [a] -> [a]
+myCompressList_1 [] = []
+myCompressList_1 x@(_:[]) = x
+myCompressList_1 (x:xs@(y:_)) | x == y    = myCompressList_1 xs
+                              | otherwise = x : myCompressList_1 xs
+
+myCompressList_2 :: Eq a => [a] -> [a]
+myCompressList_2 xs = fst $ foldr f ([], Nothing) xs
+    where f :: Eq a => a -> ([a], Maybe a) -> ([a], Maybe a)
+          f x ([], Nothing) = ([x], Just x)
+          f x y@(xs, Just x') | x == x'   = y
+                              | otherwise = (x:xs, Just x)
+
 --1.09 (**) Pack consecutive duplicates of list elements into sublists.
 --    If a list contains repeated elements they should be placed in separate sublists.
 --
