@@ -1,5 +1,7 @@
 module Lists where
 
+import Data.List (foldl')
+
 -- A list is either empty or it is composed of a first element (head) and a tail, which is a list itself. In Prolog we represent the empty list by the atom [] and a non-empty list by a term [H|T] where H denotes the head and T denotes the tail.
 
 --1.01 (*) Find the last element of a list.
@@ -44,7 +46,22 @@ myListPenultimate_3 xs = fst $ foldr f (Nothing, 1) xs
 --    Example:
 --    ?- element_at(X,[a,b,c,d,e],3).
 --    X = c
---
+
+myListNth_1 :: [a] -> Int -> a
+myListNth_1 = (!!)
+
+myListNth_2 :: [a] -> Int -> Maybe a
+myListNth_2 [] _     = Nothing
+myListNth_2 (x:_) 0  = Just x
+myListNth_2 (x:xs) n = myListNth_2 xs $ n - 1
+
+myListNth_3 :: [a] -> Int -> Maybe a
+myListNth_3 xs n = fst $ foldl' f (Nothing, n) xs
+    where f :: (Maybe a, Int) -> a -> (Maybe a, Int)
+          f x@(_, -1) _ = x
+          f (_, 0) x    = (Just x, -1)
+          f (_, n) _    = (Nothing, n - 1)
+
 --1.04 (*) Find the number of elements of a list.
 --
 --1.05 (*) Reverse a list.
