@@ -104,7 +104,16 @@ myListIsPalendrome_1 :: Eq a => [a] -> Bool
 myListIsPalendrome_1 xs = xs == reverse xs
 
 myListIsPalendrome_2 :: Eq a => [a] -> Bool
-myListIsPalendrome_2 xs = fst $ foldr f (True, xs) xs
+myListIsPalendrome_2 xs = f xs xs
+    where f :: Eq a => [a] -> [a] -> Bool
+          f [] [] = True
+          f _ []  = False
+          f [] _  = False
+          f (x:xs) ys | x == last ys = f xs $ init ys
+                      | otherwise    = False
+
+myListIsPalendrome_3 :: Eq a => [a] -> Bool
+myListIsPalendrome_3 xs = fst $ foldr f (True, xs) xs
     where f :: Eq a => a -> (Bool, [a]) -> (Bool, [a])
           f _ (False, _)      = (False, [])
           f x' (True, (x:xs)) = (x' == x, xs)
