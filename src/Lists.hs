@@ -22,7 +22,23 @@ myListLast_3 = foldr f Nothing
 
 --1.02 (*) Find the last but one element of a list.
 --    (de: zweitletztes Element, fr: avant-dernier élément)
---
+
+myListPenultimate_1 :: [a] -> a
+myListPenultimate_1 = last . init
+
+myListPenultimate_2 :: [a] -> Maybe a
+myListPenultimate_2 []       = Nothing
+myListPenultimate_2 (x:[])   = Nothing
+myListPenultimate_2 (x:_:[]) = Just x
+myListPenultimate_2 (x:xs)   = myListPenultimate_2 xs
+
+myListPenultimate_3 :: [a] -> Maybe a
+myListPenultimate_3 xs = fst $ foldr f (Nothing, 1) xs
+    where f :: a -> (Maybe a, Int) -> (Maybe a, Int)
+          f x (Nothing, 1) = (Nothing, 0)
+          f x (Nothing, 0) = (Just x, 0)
+          f x y            = y
+
 --1.03 (*) Find the K'th element of a list.
 --    The first element in the list is number 1.
 --    Example:
