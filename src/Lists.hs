@@ -99,7 +99,17 @@ myListReverse_4 = foldl' f []
 
 --1.06 (*) Find out whether a list is a palindrome.
 --    A palindrome can be read forward or backward; e.g. [x,a,m,a,x].
---
+
+myListIsPalendrome_1 :: Eq a => [a] -> Bool
+myListIsPalendrome_1 xs = xs == reverse xs
+
+myListIsPalendrome_2 :: Eq a => [a] -> Bool
+myListIsPalendrome_2 xs = fst $ foldr f (True, xs) xs
+    where f :: Eq a => a -> (Bool, [a]) -> (Bool, [a])
+          f _ (False, _)      = (False, [])
+          f x' (True, (x:xs)) = (x' == x, xs)
+
+
 --1.07 (**) Flatten a nested list structure.
 --    Transform a list, possibly holding lists as elements into a 'flat' list by replacing each list with its elements (recursively).
 --
