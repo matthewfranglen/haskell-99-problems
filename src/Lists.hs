@@ -63,7 +63,21 @@ myListNth_3 xs n = fst $ foldl' f (Nothing, n) xs
           f (_, n) _    = (Nothing, n - 1)
 
 --1.04 (*) Find the number of elements of a list.
---
+
+myListLength_1 :: [a] -> Int
+myListLength_1 = length
+
+myListLength_2 :: [a] -> Int
+myListLength_2 xs = f xs 0
+    where f :: [a] -> Int -> Int
+          f [] n     = n
+          f (x:xs) n = f xs $ n + 1
+
+myListLength_3 :: [a] -> Int
+myListLength_3 = foldr f 0
+    where f :: a -> Int -> Int
+          f _ = (+1)
+
 --1.05 (*) Reverse a list.
 --
 --1.06 (*) Find out whether a list is a palindrome.
